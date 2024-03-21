@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
   }
 
   private blankUrlList: Array<string> = [
-    '/user/login'
+    '/answer-manager-api/user/login'
   ]
 
   private includesBlankUrl(url: string): boolean {
