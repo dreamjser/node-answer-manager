@@ -17,7 +17,17 @@ export class UserService {
    * @param pwd
    */
   async findUserById(name: string, pwd: string): Promise<User> {
-    const userInfo = await this.userRepo.findOneBy({user_name: name, user_pwd: pwd});
+    const userInfo = await this.userRepo.findOne({
+      where: {
+        user_name: name,
+        user_pwd: pwd
+      },
+      select: {
+        user_id: true,
+        user_name: true,
+        user_last_time: true,
+      }
+    });
     return userInfo
   }
 }

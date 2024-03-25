@@ -1,12 +1,14 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@nestjs/cache-manager';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module'
 import { User } from './user/user.entity';
 import { AuthGuard } from './common/auth.guard';
-import { TokenService } from './common/token.service'
+import { TokenService } from './common/token.service';
+import { AuthInterceptor } from './common/auth.interceptor';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -29,9 +31,13 @@ import { TokenService } from './common/token.service'
   providers: [
     AppService,
     TokenService,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AuthGuard,
+    // },
     {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
+      provide: APP_INTERCEPTOR,
+      useClass: AuthInterceptor,
     }
   ],
 })
