@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import { User } from './user.entity';
 
 @Injectable()
@@ -16,12 +15,15 @@ export class UserService {
    * @param name
    * @param pwd
    */
-  async findUserById(name: string, pwd: string): Promise<User> {
+  async findUserById(name: string, pwd?: string): Promise<User> {
+    const queryData: any = {
+      user_name: name
+    }
+    if(pwd) {
+      queryData.user_pwd = pwd
+    }
     const userInfo = await this.userRepo.findOne({
-      where: {
-        user_name: name,
-        user_pwd: pwd
-      },
+      where: queryData,
       select: {
         user_id: true,
         user_name: true,
@@ -29,5 +31,19 @@ export class UserService {
       }
     });
     return userInfo
+  }
+
+  /**
+   * 新增用户
+   *
+   * @param name
+   * @param pwd
+   */
+  async addUser(name: string, pwd: string): Promise<any> {
+    const res = await this.userRepo.insert({
+      user_name: name,
+      user_pwd: pwd,
+    });
+    return res
   }
 }

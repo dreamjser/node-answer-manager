@@ -31,14 +31,14 @@ import { AuthInterceptor } from './common/auth.interceptor';
   providers: [
     AppService,
     TokenService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard,
-    // },
     {
-      provide: APP_INTERCEPTOR,
-      useClass: AuthInterceptor,
-    }
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: AuthInterceptor,
+    // }
   ],
 })
 export class AppModule {}

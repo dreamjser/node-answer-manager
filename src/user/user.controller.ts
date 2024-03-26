@@ -34,13 +34,20 @@ export class UserController {
 
     return responseData('0', null, data)
   }
-  @Get('getUserInfo')
-  async queryUserInfo(@Query() query): Promise<Result>{
-    const data:any = await this.cacheManager.get(query.token);
-    return {
-      errorCode: 0,
-      errorMsg: '登录成功',
-      data,
+
+  @Post('addUser')
+  async addUser(@Body() body): Promise<Result>{
+    const hasData = await this.userService.findUserById(body.name)
+    if(hasData) {
+      return responseData('MT101', '用户已存在')
+    }
+
+    const data = await this.userService.addUser(body.name, body.pwd);
+
+    if(data) {
+      return responseData('0')
+    }else{
+      return responseData('MT101', '新增用户失败')
     }
   }
 }
