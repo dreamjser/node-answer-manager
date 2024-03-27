@@ -31,5 +31,5 @@ export class User {
   @Column({
     comment: '更新日期',
   })
-  user_last_time: number;
+  user_last_time: string;
 }
