@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('user')
+@Entity('m_user')
 export class User {
   /**
    * 自增主键
