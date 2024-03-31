@@ -1,4 +1,4 @@
-import { Controller, Inject, Post, Get, Put, Delete, Body, Query } from '@nestjs/common';
+import { Controller, Inject, Post, Get, Put, Body, Query } from '@nestjs/common';
 import { Cache } from 'cache-manager'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { md5 } from 'js-md5'
@@ -85,7 +85,7 @@ export class UserController {
     return responseData('0')
   }
 
-  @Delete('deleteUser')
+  @Put('deleteUser')
   async Delete(@Body() body): Promise<Result>{
     const hasData = await this.userService.findUser({
       user_id: body.id

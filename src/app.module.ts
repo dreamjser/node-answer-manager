@@ -1,14 +1,14 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@nestjs/cache-manager';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD } from '@nestjs/core';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module'
-import { User } from './user/user.entity';
 import { AuthGuard } from './common/auth.guard';
 import { TokenService } from './common/token.service';
-import { AuthInterceptor } from './common/auth.interceptor';
-
+import { UserModule } from './user/user.module';
+import { User } from './user/user.entity';
+import { QuestionGroupModule } from './question_group/question_group.module'
+import { QuestionGroup } from './question_group/question_group.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -18,7 +18,7 @@ import { AuthInterceptor } from './common/auth.interceptor';
       username: 'root',
       password: 'sun.012790',
       database: 'answer',
-      entities: [User],
+      entities: [User, QuestionGroup],
       synchronize: true,
     }),
     CacheModule.register({
@@ -26,6 +26,7 @@ import { AuthInterceptor } from './common/auth.interceptor';
       isGlobal: true,
     }),
     UserModule,
+    QuestionGroupModule,
   ],
   controllers: [],
   providers: [
@@ -35,10 +36,6 @@ import { AuthInterceptor } from './common/auth.interceptor';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
-    // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: AuthInterceptor,
-    // }
   ],
 })
 export class AppModule {}
