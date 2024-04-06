@@ -7,8 +7,11 @@ import { AuthGuard } from './common/auth.guard';
 import { TokenService } from './common/token.service';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
-import { QuestionGroupModule } from './question_group/question_group.module'
+import { QuestionGroupModule } from './question_group/question_group.module';
 import { QuestionGroup } from './question_group/question_group.entity';
+import { QuestionModule } from './question/question.module';
+import { Question } from './question/question.entity';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -18,7 +21,7 @@ import { QuestionGroup } from './question_group/question_group.entity';
       username: 'root',
       password: 'sun.012790',
       database: 'answer',
-      entities: [User, QuestionGroup],
+      entities: [User, QuestionGroup, Question],
       synchronize: true,
     }),
     CacheModule.register({
@@ -27,6 +30,7 @@ import { QuestionGroup } from './question_group/question_group.entity';
     }),
     UserModule,
     QuestionGroupModule,
+    QuestionModule,
   ],
   controllers: [],
   providers: [
