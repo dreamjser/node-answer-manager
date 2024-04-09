@@ -39,6 +39,8 @@ export class QuestionService {
         question_name: true,
         question_tag: true,
         question_type: true,
+        answer_options: true,
+        answer_rights: true,
       },
     });
 
@@ -55,11 +57,13 @@ export class QuestionService {
    * @param type 题目类型
    * @param tag 题目标签
    */
-  async addQuestion(name: string, type: string, tag?: number): Promise<any> {
+  async addQuestion(name: string, type: string, tag: number, options: string, rights: string): Promise<any> {
     const res = await this.questRepo.insert({
       question_name: name,
-      question_tag: tag || null,
+      question_tag: tag,
       question_type: type,
+      answer_options: options,
+      answer_rights: rights,
     });
     return res;
   }

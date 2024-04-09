@@ -9,6 +9,14 @@ export class QuestionController {
     @Inject(QuestionService) private readonly questionService: QuestionService,
 ) { }
 
+  private transforAnswers(answers: Array<any>) {
+    const answer_options = answers.map((answer: any) => answer.answerName)
+    const answer_right = answers.map((answer: any) =>{
+      return answer.isRight? 1: 0
+    })
+    return {answer_options: answer_options.join('|'),answer_right: answer_right.join('|')}
+  }
+
   @Get('getQuestionList')
   async getQuestionList(@Query() query): Promise<Result> {
     const current = query.current || 1
@@ -27,11 +35,13 @@ export class QuestionController {
     const hasData = await this.questionService.findQuestion({
       question_name: body.name
     })
+    const answerData = this.transforAnswers(body.answers || [])
+
     if(hasData) {
-      return responseData('MT301', '题库已存在')
+      return responseData('MT301', '题目已存在')
     }
 
-    const data = await this.questionService.addQuestion(body.name, body.desc);
+    const data = await this.questionService.addQuestion(body.name, body.type, body.tag || 0, answerData.answer_options, answerData.answer_right);
 
     if(data) {
       return responseData('0')

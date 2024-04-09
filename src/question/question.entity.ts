@@ -33,5 +33,21 @@ export class Question {
   @Column({
     comment: '题目标签',
   })
-  question_tag: number | null;
+  question_tag: number;
+  /**
+   * 答案选项
+   *
+   */
+  @Column({
+    comment: '答案选项',
+  })
+  answer_options: string;
+  /**
+   * 正确答案
+   *
+   */
+  @Column({
+    comment: '正确答案',
+  })
+  answer_rights: string;
 }
