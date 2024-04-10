@@ -11,23 +11,19 @@ export class QuestionService {
   ) {}
 
   /**
-   * 查询用户
+   * 查询问题
    *
-   * @param name
-   * @param pwd
    */
   async findQuestion(queryData: any): Promise<Question> {
-    const userInfo = await this.questRepo.findOne({
+    const info = await this.questRepo.findOne({
       where: queryData,
     });
-    return userInfo
+    return info
   }
 
   /**
    * 查询所有题目
    *
-   * @param name
-   * @param pwd
    */
   async findQuestionAll(queryData: any, take: number, skip: number): Promise<any> {
     const arr = await this.questRepo.findAndCount({

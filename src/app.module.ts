@@ -11,6 +11,8 @@ import { QuestionGroupModule } from './question_group/question_group.module';
 import { QuestionGroup } from './question_group/question_group.entity';
 import { QuestionModule } from './question/question.module';
 import { Question } from './question/question.entity';
+import { TagModule } from './tag/tag.module';
+import { Tag } from './tag/tag.entity'
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import { Question } from './question/question.entity';
       username: 'root',
       password: 'sun.012790',
       database: 'answer',
-      entities: [User, QuestionGroup, Question],
+      entities: [User, QuestionGroup, Question, Tag],
       synchronize: true,
     }),
     CacheModule.register({
@@ -31,6 +33,7 @@ import { Question } from './question/question.entity';
     UserModule,
     QuestionGroupModule,
     QuestionModule,
+    TagModule,
   ],
   controllers: [],
   providers: [

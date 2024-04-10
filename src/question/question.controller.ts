@@ -46,19 +46,19 @@ export class QuestionController {
     if(data) {
       return responseData('0')
     }else{
-      return responseData('MT302', '新增题库失败')
+      return responseData('MT302', '新增题目失败')
     }
   }
 
   @Put('updateQuestion')
   async updateQuestion(@Body() body): Promise<Result>{
     const hasData = await this.questionService.findQuestion({
-      _id: body.id
+      question_id: body.id
     })
     if(hasData) {
       await this.questionService.updateQuestion(body.id, {
-        _name: body.name,
-        _desc: body.desc
+        question_name: body.name,
+        question_type: body.type
       })
     }
 
