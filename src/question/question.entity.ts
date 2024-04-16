@@ -27,14 +27,6 @@ export class Question {
   })
   question_type: string;
   /**
-   * 题目标签
-   *
-   */
-  @Column({
-    comment: '题目标签',
-  })
-  question_tag: number;
-  /**
    * 答案选项
    *
    */

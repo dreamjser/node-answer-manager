@@ -41,7 +41,7 @@ export class QuestionController {
       return responseData('MT301', '题目已存在')
     }
 
-    const data = await this.questionService.addQuestion(body.name, body.type, body.tag || 0, answerData.answer_options, answerData.answer_right);
+    const data = await this.questionService.addQuestion(body.name, body.type, answerData.answer_options, answerData.answer_right);
 
     if(data) {
       return responseData('0')
