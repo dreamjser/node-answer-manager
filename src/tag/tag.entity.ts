@@ -19,3 +19,30 @@ export class Tag {
   tag_name: string;
 
 }
+
+@Entity('tag_question_releation')
+export class TagQuestionReleation {
+  /**
+   * 自增主键
+   */
+  @PrimaryGeneratedColumn({
+    comment: '自增ID',
+  })
+  releation_id: number;
+
+  /**
+   * tag id
+   */
+  @Column({
+    comment: 'tag id',
+  })
+  tag_id: number;
+
+  /**
+   * question id
+   */
+  @Column({
+    comment: 'question id',
+  })
+  question_id: number;
+}
