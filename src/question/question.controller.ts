@@ -8,7 +8,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
-import { TagQuestionReleationService } from '../tag/tag.service';
 import { Result } from 'src/common/result.interface';
 import { responseData } from '../common/utils/response_data';
 import { Like } from 'typeorm';
@@ -17,8 +16,6 @@ export class QuestionController {
   constructor(
     @Inject(QuestionService)
     private readonly questionService: QuestionService,
-    @Inject(TagQuestionReleationService)
-    private readonly tagQuestionReleationService: TagQuestionReleationService,
   ) {}
 
   private transforAnswers(answers: Array<any>) {
@@ -67,13 +64,10 @@ export class QuestionController {
       body.type,
       answerData.answer_options,
       answerData.answer_right,
+      body.tag.map(id => ({
+        id,
+      })),
     );
-    const relations = body.tag.map((tag) => ({
-      question_id: data.raw.insertId,
-      tag_id: tag,
-    }));
-    // 新增题目标签关系
-    await this.tagQuestionReleationService.addTagQuestionReleation(relations);
 
     if (data) {
       return responseData('0');
@@ -85,12 +79,19 @@ export class QuestionController {
   @Put('updateQuestion')
   async updateQuestion(@Body() body): Promise<Result> {
     const hasData = await this.questionService.findQuestion({
-      question_id: body.id,
+      id: body.id,
     });
+    const answerData = this.transforAnswers(body.answers || []);
+
     if (hasData) {
       await this.questionService.updateQuestion(body.id, {
         question_name: body.name,
         question_type: body.type,
+        answer_options: answerData.answer_options,
+        answer_rights: answerData.answer_right,
+        tags: body.tag.map(id => ({
+          id,
+        })),
       });
     }
 
@@ -100,7 +101,7 @@ export class QuestionController {
   @Put('deleteQuestion')
   async deleteQuestion(@Body() body): Promise<Result> {
     const hasData = await this.questionService.findQuestion({
-      question_id: body.id,
+      id: body.id,
     });
 
     if (hasData) {

@@ -42,7 +42,7 @@ export class TagController {
   @Put('updateTag')
   async updateTag(@Body() body): Promise<Result>{
     const hasData = await this.tagService.findTag({
-      tag_id: body.id
+      id: body.id
     })
     if(hasData) {
       await this.tagService.updateTag(body.id, {
@@ -56,7 +56,7 @@ export class TagController {
   @Put('deleteTag')
   async deleteTag(@Body() body): Promise<Result>{
     const hasData = await this.tagService.findTag({
-      tag_id: body.id
+      id: body.id
     })
 
     if(hasData) {

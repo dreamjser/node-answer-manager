@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Question } from './question.entity';
-const dayjs = require('dayjs');
+import { Tag } from 'src/tag/tag.entity'
 @Injectable()
 export class QuestionService {
   constructor(
@@ -31,12 +31,13 @@ export class QuestionService {
       take,
       skip,
       select: {
-        question_id: true,
+        id: true,
         question_name: true,
         question_type: true,
         answer_options: true,
         answer_rights: true,
       },
+      relations: ['tags']
     });
 
     return {
@@ -52,12 +53,14 @@ export class QuestionService {
    * @param type 题目类型
    * @param tag 题目标签
    */
-  async addQuestion(name: string, type: string, options: string, rights: string): Promise<any> {
-    const res = await this.questRepo.insert({
+  async addQuestion(name: string, type: string, options: string, rights: string, tags: any): Promise<any> {
+
+    const res = await this.questRepo.save({
       question_name: name,
       question_type: type,
       answer_options: options,
       answer_rights: rights,
+      tags,
     });
     return res;
   }
@@ -66,12 +69,12 @@ export class QuestionService {
    * 修改题目
    *
    */
-  async updateQuestion(question_id: number, updateData: any): Promise<any> {
-    const res = await this.questRepo.update(
+  async updateQuestion(id: number, updateData: any): Promise<any> {
+    const res = await this.questRepo.save(
       {
-        question_id,
+        id,
+        ...updateData,
       },
-      updateData,
     );
     return res;
   }
@@ -79,11 +82,11 @@ export class QuestionService {
   /**
    * 删除题库
    *
-   * @param question_id 题目id
+   * @param id 题目id
    */
-  async deleteQuestion(question_id: number): Promise<any> {
+  async deleteQuestion(id: number): Promise<any> {
     const res = await this.questRepo.delete({
-      question_id,
+      id,
     });
     return res;
   }

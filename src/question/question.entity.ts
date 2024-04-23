@@ -1,5 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { Tag } from 'src/tag/tag.entity';
 @Entity('question')
 export class Question {
   /**
@@ -8,7 +14,7 @@ export class Question {
   @PrimaryGeneratedColumn({
     comment: '自增ID',
   })
-  question_id: number;
+  id: number;
 
   /**
    * 题目名称
@@ -42,4 +48,11 @@ export class Question {
     comment: '正确答案',
   })
   answer_rights: string;
+
+  @ManyToMany(() => Tag, {
+    eager: true,
+    cascade: true,
+  })
+  @JoinTable()
+  tags: Tag[]
 }
